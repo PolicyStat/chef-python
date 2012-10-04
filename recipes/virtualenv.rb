@@ -20,6 +20,9 @@
 
 include_recipe "python::pip"
 
+virtualenv_version = node['python']['virtualenv']['version']
+
 python_pip "virtualenv" do
   action :install
+  version virtualenv_version
 end
