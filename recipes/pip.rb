@@ -18,8 +18,9 @@
 # limitations under the License.
 #
 
-python_bindir = "#{node['python']['prefix_dir']}/bin"
-pip_bindir    = "#{node['python']['pip']['prefix_dir']}/bin"
+python_bindir  = "#{node['python']['prefix_dir']}/bin"
+pip_bindir     = "#{node['python']['pip']['prefix_dir']}/bin"
+pip_version     = node['python']['pip']['version']
 
 # Ubuntu's python-setuptools, python-pip and python-virtualenv packages
 # are broken...this feels like Rubygems!
@@ -32,10 +33,11 @@ remote_file "#{Chef::Config[:file_cache_path]}/distribute_setup.py" do
 end
 
 bash "install-pip" do
+  v = "==#{pip_version}" unless pip_version.eql?('latest')
   cwd Chef::Config[:file_cache_path]
   code <<-EOF
   #{python_bindir}/python distribute_setup.py
-  #{pip_bindir}/easy_install pip
+  easy_install pip#{v}
   EOF
   not_if { ::File.exists?("#{pip_bindir}/pip") }
 end
