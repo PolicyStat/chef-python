@@ -41,3 +41,17 @@ bash "install-pip" do
   EOF
   not_if { ::File.exists?("#{pip_bindir}/pip") }
 end
+
+packages = node[:python][:packages]
+packages = packages.split() if packages.is_a? String
+
+packages.each do |pkg|
+  pkg = "#{pkg} latest".split()
+  name = pkg[0]
+  version = pkg[1]
+  python_pip name do
+    # upgrade will install if the package does not exist
+    action :upgrade
+    version version
+  end
+end

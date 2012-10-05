@@ -42,3 +42,5 @@ default['python']['configure_options'] = %W{--prefix=#{python['prefix_dir']}}
 
 default['python']['pip']['version'] = 'latest'
 default['python']['virtualenv']['version'] = 'latest'
+
+default['python']['packages'] = []
